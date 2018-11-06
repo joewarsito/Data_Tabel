@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Table</title>
+    <style>
+        table {
+        width: 60%;
+        border: 1p green;
+        border-collapse: collapse;
+    }
+    th, td {
+        height: 30px; border: 1px double red;
+        border-collapse: collapse;
+    }
+    </style>
+</head>
+
+<body>
+    <center>
+        Nama
+        <input id="nama" type="text" placeholder="Ketik Nama ...">
+        Tanggal Lahir
+        <input id="tahunlahir" type="date" placeholder="">
+        Kota Asal
+        <input id="kota" type="text" placeholder="Ketik Kota ...">
+        <br><br>
+        <button onclick="data()"> D A F T A R </button>
+        <button onclick="reset()"> R E S E T</button><br><br>
+        <button onclick="ascenNama()"> Asc Nama </button>
+        <button onclick="descenNama()"> Desc Nama </button>
+        <button onclick="ascenUsia()"> Asc Usia</button>
+        <button onclick="descenUsia()"> Desc Usia</button>
+        <button onclick="ascenKota()"> Asc Kota</button>
+        <button onclick="descenKota()"> Desc Kota</button><br><br>
+
+
+        <table>
+            <thead id="thead"></thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </center>
+
+    <script>
+        var users = []
+        var month = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
+        
+        function data() {
+            var dataUser = {
+                nama: document.getElementById('nama').value,
+                tahunlahir: document.getElementById('tahunlahir').value.slice(0, 4),
+                bulan: month[parseInt(document.getElementById('tahunlahir').value.slice(5, 7) - 1)],
+                tanggal: document.getElementById('tahunlahir').value.slice(8, 10),
+                usia: 2018 - document.getElementById('tahunlahir').value.slice(0, 4),
+                pensiun: ()=>{
+                    if (((2018 - document.getElementById('tahunlahir').value.slice(0, 4)) - 55) > 0)
+                    return 0
+                    else return (2018 - document.getElementById('tahunlahir').value.slice(0, 4)) - 55
+                },
+                kota: document.getElementById('kota').value,
+
+                
+                zodiak: function() {
+                    if (this.tg >= 21 && this.bulan == "Maret" || this.tanggal <= 19 && this.bulan == "April") return 'Aries'
+                    else if (this.tanggal >= 20 && this.bulan == "April" || this.tanggal <= 20 && this.bulan == "Mei") return 'Taurus'
+                    else if (this.tanggal >= 21 && this.bulan == "Mei" || this.tanggal <= 22 && this.bulan == "Juni") return 'Gemini'
+                    else if (this.tanggal >= 23 && this.bulan == "Juni" || this.tanggal <= 22 && this.bulan == "Juli") return 'Cancer'
+                    else if (this.tanggal >= 23 && this.bulan == "Juli" || this.tanggal <= 22 && this.bulan == "Agustus") return 'Leo'
+                    else if (this.tanggal >= 23 && this.bulan == "Agustus" || this.tanggal <= 22 && this.bulan == "September") return 'Virgo'
+                    else if (this.tanggal >= 23 && this.bulan == "September" || this.tanggal <= 22 && this.bulan == "Oktober") return 'Libra'
+                    else if (this.tanggal >= 23 && this.bulan == "Oktober" || this.tanggal <= 22 && this.bulan == "November") return 'Scorpio'
+                    else if (this.tanggal >= 23 && this.bulan == "November" || this.tanggal <= 22 && this.bulan == "Desember") return 'Sagitarius'
+                    else if (this.tanggal >= 23 && this.bulan == "Desember" || this.tanggal <= 1 && this.bulan == "Januari") return 'Capricorn'
+                    else if (this.tanggal >= 2 && this.bulan == "Januari" || this.tanggal <= 18 && this.bulan == "Februari") return 'Aquarius'
+                    else if (this.tanggal >= 19 && this.bulan == "Februari" || this.tanggal <= 20 && this.bulan == "Maret") return 'Pisces'
+                }
+            }
+    
+            users.push(dataUser)
+
+            document.getElementById("thead").innerHTML =
+                '<tr><th> Nama </th><th colspan="3"> Tahun Lahir </th><th> Zodiak </th><th>Usia</th><th>Pensiun</th><th>Kota</th><th>Hapus</th></tr>'
+            document.getElementById("tbody").innerHTML = ' ';
+
+            for (var i = 0; i < users.length; i++) {
+                document.getElementById("tbody").innerHTML +=
+                    '<tr><th>' + users[i].nama + '</th><th>' + users[i].tahunlahir +
+                    '</th><th>' + users[i].tanggal + '</th> <th>' + users[i].bulan + '</th><th>' + users[i].zodiak() +
+                    '</th><th>' + users[i].usia + '</th><th>' + users[i].pensiun() +
+                    '</th><th>' + users[i].kota + '</th><th>' + '<button onclick="hapus()"> Hapus </button>'+ '</th></tr>'
+            }
+        }
+        function reset() {
+            document.getElementById('thead').innerHTML = ''
+            document.getElementById("tbody").innerHTML = ''
+        }
+
+        // function hapus(){
+        //     document.getElementById('thead').innerHTML = ''
+        //     document.getElementById("tbody").innerHTML = ''
+            
+
+        function ascenUsia() {
+            document.getElementById('tbody').innerHTML = ""
+
+            for (i = 0; i < users.length; i++) {
+                users.sort(function (a, b) {
+                    return a.usia - b.usia
+                })
+                console.log(users)
+
+                document.getElementById("tbody").innerHTML += '<tr><th>' + users[i].nama + '</th><th>' + users[i].tahunlahir +
+                    '</th><th>' + users[i].tanggal + '</th> <th>' + users[i].bulan + '</th><th>' + users[i].zodiak() +
+                    '</th><th>' + users[i].usia + '</th><th>' + users[i].pensiun() +
+                    '</th><th>' + users[i].kota + '</th><th>' + '<button onclick="hapus()"> Hapus </button>'+ '</th></tr>'
+            }
+        }
+
+        function descenUsia() {
+            document.getElementById('tbody').innerHTML = ""
+            for (i = 0; i < users.length; i++) {
+                users.sort(function (a, b) {
+                    return b.usia - a.usia
+                })
+                console.log(users)
+
+                document.getElementById("tbody").innerHTML += '<tr><th>' + users[i].nama + '</th><th>' + users[i].tahunlahir +
+                    '</th><th>' + users[i].tanggal + '</th> <th>' + users[i].bulan + '</th><th>' + users[i].zodiak() +
+                    '</th><th>' + users[i].usia + '</th><th>' + users[i].pensiun() +
+                    '</th><th>' + users[i].kota + '</th><th>' + '<button onclick="hapus()"> Hapus </button>'+ '</th></tr>'
+            }
+        }
+
+        function ascenNama() {
+            document.getElementById('tbody').innerHTML = ""
+            for (i = 0; i < users.length; i++) {
+                users.sort(function (a, b) {
+                    if (a.nama == b.nama) return 0
+                    else if (a.nama <= b.nama) return -1
+                    else return 1
+                })
+                console.log(users)
+
+                document.getElementById("tbody").innerHTML += '<tr><th>' + users[i].nama + '</th><th>' + users[i].tahunlahir +
+                    '</th><th>' + users[i].tanggal + '</th> <th>' + users[i].bulan + '</th><th>' + users[i].zodiak() +
+                    '</th><th>' + users[i].usia + '</th><th>' + users[i].pensiun() +
+                    '</th><th>' + users[i].kota + '</th><th>' + '<button onclick="hapus()"> Hapus </button>'+ '</th></tr>'
+            }
+        }
+
+        function descenNama() {
+            document.getElementById('tbody').innerHTML = ""
+            for (i = 0; i < users.length; i++) {
+                users.sort(function (a, b) {
+                    if (a.nama == b.nama) return 0
+                    else if (a.nama >= b.nama) return -1
+                    else return 1
+                })
+                console.log(users)
+
+                document.getElementById("tbody").innerHTML += '<tr><th>' + users[i].nama + '</th><th>' + users[i].tahunlahir +
+                    '</th><th>' + users[i].tanggal + '</th> <th>' + users[i].bulan + '</th><th>' + users[i].zodiak() +
+                    '</th><th>' + users[i].usia + '</th><th>' + users[i].pensiun() +
+                    '</th><th>' + users[i].kota + '</th><th>' + '<button onclick="hapus()"> Hapus </button>'+ '</th></tr>'
+            }
+        }
+
+        function ascenKota() {
+            document.getElementById('tbody').innerHTML = ""
+            for (i = 0; i < users.length; i++) {
+                users.sort(function (a, b) {
+                    if (a.kota == b.kota) return 0
+                    else if (a.kota <= b.kota) return -1
+                    else return 1
+                })
+                console.log(users)
+
+                document.getElementById("tbody").innerHTML += '<tr><th>' + users[i].nama + '</th><th>' + users[i].tahunlahir +
+                    '</th><th>' + users[i].tanggal + '</th> <th>' + users[i].bulan + '</th><th>' + users[i].zodiak() +
+                    '</th><th>' + users[i].usia + '</th><th>' + users[i].pensiun() +
+                    '</th><th>' + users[i].kota + '</th><th>' + '<button onclick="hapus()"> Hapus </button>'+ '</th></tr>'
+            }
+        }
+
+        function descenKota() {
+            document.getElementById('tbody').innerHTML = ""
+            for (i = 0; i < users.length; i++) {
+                users.sort(function (a, b) {
+                    if (a.kota == b.kota) return 0
+                    else if (a.kota >= b.kota) return -1
+                    else return 1
+                })
+                console.log(users)
+
+                document.getElementById("tbody").innerHTML += '<tr><th>' + users[i].nama + '</th><th>' + users[i].tahunlahir +
+                    '</th><th>' + users[i].tanggal + '</th> <th>' + users[i].bulan + '</th><th>' + users[i].zodiak() +
+                    '</th><th>' + users[i].usia + '</th><th>' + users[i].pensiun() +
+                    '</th><th>' + users[i].kota + '</th><th>' + '<button onclick="hapus()"> Hapus </button>'+ '</th></tr>'
+            }
+        }
+    </script>
+</body>
+
+</html>
